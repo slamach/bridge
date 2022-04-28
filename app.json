@@ -1,0 +1,31 @@
+{
+  "expo": {
+    "name": "Bridge",
+    "description": "Bridge - Messenger built with React Native",
+    "slug": "bridge",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#2b59c3"
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": false
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#2b59c3"
+      }
+    },
+    "githubUrl": "https://github.com/slamach/bridge"
+  }
+}
