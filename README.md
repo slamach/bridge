@@ -6,6 +6,7 @@ React Native messenger created for learning purposes.
 ### Built With
 - Expo
 - React Native
+- TypeScript
 - Husky
 - Prettier
 
