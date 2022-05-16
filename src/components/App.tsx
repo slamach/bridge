@@ -1,20 +1,16 @@
+import React from 'react';
+import { SafeAreaView } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import AuthScreen from './AuthScreen/AuthScreen';
+import { styles } from './AppStyles';
 
-export default function App() {
+export const App = () => {
   return (
-    <View style={styles.container}>
-      <Text>Bridge</Text>
-      <StatusBar style="auto" />
-    </View>
+    <SafeAreaView style={styles.appContainer}>
+      <AuthScreen />
+      <StatusBar style="light" />
+    </SafeAreaView>
   );
-}
+};
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default App;
