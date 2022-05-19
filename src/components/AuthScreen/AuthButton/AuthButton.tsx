@@ -5,7 +5,7 @@ import { styles } from './AuthButtonStyles';
 type AuthButtonProps = {
   content: string;
   highlight?: boolean;
-  marginBottom?: boolean;
+  style?: {};
 };
 
 const AuthButton = (props: AuthButtonProps) => {
@@ -14,7 +14,7 @@ const AuthButton = (props: AuthButtonProps) => {
       style={[
         styles.button,
         ...(props.highlight ? [styles.highlightedButton] : []),
-        ...(props.marginBottom ? [styles.marginBottom] : []),
+        ...(props.style ? [props.style] : []),
       ]}
       activeOpacity={0.85}
       onPress={() => console.log('Button Pressed')}

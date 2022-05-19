@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import colors from '../styles/colors';
+import colors from '../../styles/colors';
 
 export const styles = StyleSheet.create({
   authContainer: {
@@ -16,5 +16,8 @@ export const styles = StyleSheet.create({
     fontSize: 22,
     fontWeight: '600',
     color: colors.text,
+  },
+  buttonMarginBottom: {
+    marginBottom: 15,
   },
 });

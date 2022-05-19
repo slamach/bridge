@@ -1,19 +1,17 @@
 import { StyleSheet } from 'react-native';
-import colors from '../../../styles/colors';
+import colors from '../../styles/colors';
 
 export const styles = StyleSheet.create({
-  button: {
-    width: '100%',
+  avatarContainer: {
+    justifyContent: 'center',
     alignItems: 'center',
-    padding: 15,
+    width: 40,
+    height: 40,
     backgroundColor: colors.elementsBackground,
-    borderRadius: 15,
+    borderRadius: 20,
   },
-  highlightedButton: {
-    backgroundColor: colors.highlight,
-  },
-  buttonText: {
-    fontSize: 15,
+  avatarContent: {
+    fontSize: 16,
     fontWeight: '600',
     color: colors.text,
   },
