@@ -44,10 +44,22 @@ export const styles = StyleSheet.create({
   },
   chatFooter: {
     flexDirection: 'row',
-    justifyContent: 'flex-end',
     alignItems: 'center',
     width: '100%',
     height: 60,
+  },
+  inputField: {
+    flex: 1,
+    alignItems: 'center',
+    height: 36,
+    marginRight: 7,
+    padding: 7,
+    fontSize: 17,
+    lineHeight: 22,
+    letterSpacing: -0.41,
+    color: colors.text,
+    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+    borderRadius: 10,
   },
   sendButton: {
     justifyContent: 'center',

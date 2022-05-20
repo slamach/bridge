@@ -1,8 +1,9 @@
 import React from 'react';
-import { Text, TouchableOpacity } from 'react-native';
+import { GestureResponderEvent, Text, TouchableOpacity } from 'react-native';
 import { styles } from './AuthButtonStyles';
 
 type AuthButtonProps = {
+  onPress: (event?: GestureResponderEvent) => void;
   content: string;
   highlight?: boolean;
   style?: {};
@@ -17,7 +18,7 @@ const AuthButton = (props: AuthButtonProps) => {
         ...(props.style ? [props.style] : []),
       ]}
       activeOpacity={0.85}
-      onPress={() => console.log('Button Pressed')}
+      onPress={props.onPress}
     >
       <Text style={styles.buttonText}>{props.content}</Text>
     </TouchableOpacity>

@@ -14,6 +14,7 @@ export const styles = StyleSheet.create({
   },
   buttonText: {
     fontSize: 15,
+    lineHeight: 18,
     fontWeight: '600',
     color: colors.text,
   },

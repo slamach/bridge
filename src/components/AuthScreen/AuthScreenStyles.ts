@@ -14,6 +14,7 @@ export const styles = StyleSheet.create({
   authText: {
     marginBottom: 30,
     fontSize: 22,
+    lineHeight: 27,
     fontWeight: '600',
     color: colors.text,
   },

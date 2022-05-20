@@ -1,8 +1,8 @@
-import { View, Text, FlatList } from 'react-native';
+import { View, Text, FlatList, TouchableOpacity } from 'react-native';
 import React from 'react';
 import { styles } from './ChatListScreenStyles';
 import Avatar from '../Avatar/Avatar';
-import ChatsItem from './ChatsItem/ChatsItem';
+import ChatListItem from './ChatListItem/ChatListItem';
 
 const ChatListScreen = () => {
   const conversations = [
@@ -27,14 +27,19 @@ const ChatListScreen = () => {
     <View style={styles.chatsContainer}>
       <View style={styles.chatsHeader}>
         <Text style={styles.chatsTitle}>Chats</Text>
-        <Avatar size={40} name="slamach" />
+        <TouchableOpacity
+          activeOpacity={0.85}
+          onPress={() => console.log('Logout Button Pressed')}
+        >
+          <Avatar size={40} name="slamach" />
+        </TouchableOpacity>
       </View>
       <FlatList
         data={conversations}
         keyExtractor={(item) => item.id.toString()}
         style={styles.chatList}
         renderItem={({ item }) => (
-          <ChatsItem
+          <ChatListItem
             name={item.name}
             lastMessage={item.lastMessage}
             time={item.time}

@@ -1,16 +1,16 @@
 import { View, Text, TouchableOpacity } from 'react-native';
 import React from 'react';
 import Avatar from '../../Avatar/Avatar';
-import { styles } from './ChatsItemStyles';
+import { styles } from './ChatListItemStyles';
 
-type ChatsItemProps = {
+type ChatListItemProps = {
   name: string;
   lastMessage: string;
   time: string;
   sentByUser: boolean;
 };
 
-const ChatsItem = (props: ChatsItemProps) => {
+const ChatListItem = (props: ChatListItemProps) => {
   const MAX_CHARACTERS = 35;
 
   return (
@@ -45,4 +45,4 @@ const ChatsItem = (props: ChatsItemProps) => {
   );
 };
 
-export default ChatsItem;
+export default ChatListItem;

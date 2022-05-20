@@ -1,4 +1,12 @@
-import { View, Text, TouchableOpacity, FlatList } from 'react-native';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  FlatList,
+  TextInput,
+  KeyboardAvoidingView,
+  Platform,
+} from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import React from 'react';
 import colors from '../../styles/colors';
@@ -37,7 +45,11 @@ const ChatScreen = () => {
   ];
 
   return (
-    <View style={styles.chatContainer}>
+    // TODO: Multiline input
+    <KeyboardAvoidingView
+      style={styles.chatContainer}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+    >
       <View style={styles.chatHeader}>
         <TouchableOpacity
           activeOpacity={0.85}
@@ -65,6 +77,13 @@ const ChatScreen = () => {
         )}
       />
       <View style={styles.chatFooter}>
+        <TextInput
+          style={styles.inputField}
+          placeholder="Message..."
+          placeholderTextColor="#8e8e93"
+          blurOnSubmit={false}
+          returnKeyType="send"
+        />
         <TouchableOpacity
           activeOpacity={0.85}
           style={styles.sendButton}
@@ -74,7 +93,7 @@ const ChatScreen = () => {
         </TouchableOpacity>
         <View style={styles.chatFooterBackground}></View>
       </View>
-    </View>
+    </KeyboardAvoidingView>
   );
 };
 
