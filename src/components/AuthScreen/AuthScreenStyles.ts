@@ -18,7 +18,11 @@ export const styles = StyleSheet.create({
     fontWeight: '600',
     color: colors.text,
   },
-  buttonMarginBottom: {
-    marginBottom: 15,
+  errorMessage: {
+    marginTop: 10,
+    fontSize: 15,
+    lineHeight: 18,
+    fontWeight: '500',
+    color: colors.text,
   },
 });

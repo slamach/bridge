@@ -3,7 +3,7 @@ import { GestureResponderEvent, Text, TouchableOpacity } from 'react-native';
 import { styles } from './AuthButtonStyles';
 
 type AuthButtonProps = {
-  onPress: (event?: GestureResponderEvent) => void;
+  onPress: () => void;
   content: string;
   highlight?: boolean;
   style?: {};

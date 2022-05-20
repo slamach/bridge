@@ -9,7 +9,7 @@ import { styles } from './AppStyles';
 export const App = () => {
   return (
     <SafeAreaView style={styles.appContainer}>
-      <ChatScreen />
+      <AuthScreen />
       <StatusBar style="light" />
     </SafeAreaView>
   );
