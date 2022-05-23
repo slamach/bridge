@@ -5,6 +5,7 @@ import * as Yup from 'yup';
 import AuthButton from '../AuthButton/AuthButton';
 import AuthInput from '../AuthInput/AuthInput';
 import { styles } from '../AuthScreenStyles';
+import { useNavigation } from '@react-navigation/native';
 
 const registerValidationSchema = Yup.object().shape({
   displayName: Yup.string().label('Display name').required(),
@@ -12,7 +13,12 @@ const registerValidationSchema = Yup.object().shape({
   password: Yup.string().label('Password').required().min(8),
 });
 
-const RegisterForm = () => {
+type RegisterFormProps = {
+  setLoginActive: () => void;
+  authenticate: () => void;
+};
+
+const RegisterForm = (props: RegisterFormProps) => {
   const secondInput = useRef<TextInput>(null);
   const thirdInput = useRef<TextInput>(null);
 
@@ -25,7 +31,7 @@ const RegisterForm = () => {
           password: '',
         }}
         validationSchema={registerValidationSchema}
-        onSubmit={(values) => alert(JSON.stringify(values, null, 2))}
+        onSubmit={(values) => props.authenticate()}
       >
         {({
           handleChange,
@@ -109,7 +115,7 @@ const RegisterForm = () => {
       </Formik>
       <AuthButton
         content="Log Into an Existing Account"
-        onPress={() => console.log('Move to Login Button Pressed')}
+        onPress={props.setLoginActive}
       />
     </>
   );

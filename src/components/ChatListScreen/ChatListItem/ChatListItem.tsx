@@ -2,8 +2,11 @@ import { View, Text, TouchableOpacity } from 'react-native';
 import React from 'react';
 import Avatar from '../../Avatar/Avatar';
 import { styles } from './ChatListItemStyles';
+import { ChatListScreenProps } from '../ChatListScreen';
+import { useNavigation } from '@react-navigation/native';
 
 type ChatListItemProps = {
+  id: number;
   name: string;
   lastMessage: string;
   time: string;
@@ -11,13 +14,15 @@ type ChatListItemProps = {
 };
 
 const ChatListItem = (props: ChatListItemProps) => {
+  const navigation = useNavigation<ChatListScreenProps['navigation']>();
+
   const MAX_CHARACTERS = 35;
 
   return (
     // TODO: To do swipes I can use react-native-gesture-handler
     <TouchableOpacity
       activeOpacity={0.85}
-      onPress={() => console.log('Chat Item Pressed')}
+      onPress={() => navigation.navigate('Chat', { chatId: props.id })}
     >
       <View>
         <View style={styles.chatContainer}>
@@ -27,7 +32,9 @@ const ChatListItem = (props: ChatListItemProps) => {
             style={styles.avatarMarginRight}
           />
           <View>
-            <Text style={styles.chatName}>{props.name}</Text>
+            <Text style={styles.chatName}>
+              {props.name} ({props.id})
+            </Text>
             <Text style={styles.lastMessage}>
               {props.sentByUser ? 'You: ' : ''}
               {props.lastMessage.length >= MAX_CHARACTERS

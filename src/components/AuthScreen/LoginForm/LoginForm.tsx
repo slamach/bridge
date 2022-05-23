@@ -5,13 +5,19 @@ import * as Yup from 'yup';
 import AuthButton from '../AuthButton/AuthButton';
 import AuthInput from '../AuthInput/AuthInput';
 import { styles } from '../AuthScreenStyles';
+import { useNavigation } from '@react-navigation/native';
 
 const loginValidationSchema = Yup.object().shape({
   username: Yup.string().label('Username').required(),
   password: Yup.string().label('Password').required(),
 });
 
-const LoginForm = () => {
+type LoginFormProps = {
+  setRegistrationActive: () => void;
+  authenticate: () => void;
+};
+
+const LoginForm = (props: LoginFormProps) => {
   const secondInput = useRef<TextInput>(null);
 
   return (
@@ -23,7 +29,7 @@ const LoginForm = () => {
           password: '',
         }}
         validationSchema={loginValidationSchema}
-        onSubmit={(values) => alert(JSON.stringify(values, null, 2))}
+        onSubmit={(values) => props.authenticate()}
       >
         {({
           handleChange,
@@ -86,7 +92,7 @@ const LoginForm = () => {
       </Formik>
       <AuthButton
         content="Create New Account"
-        onPress={() => console.log('Move to Registration Button Pressed')}
+        onPress={props.setRegistrationActive}
       />
     </>
   );
