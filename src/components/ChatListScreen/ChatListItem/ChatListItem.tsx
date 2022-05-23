@@ -32,9 +32,7 @@ const ChatListItem = (props: ChatListItemProps) => {
             style={styles.avatarMarginRight}
           />
           <View>
-            <Text style={styles.chatName}>
-              {props.name} ({props.id})
-            </Text>
+            <Text style={styles.chatName}>{props.name}</Text>
             <Text style={styles.lastMessage}>
               {props.sentByUser ? 'You: ' : ''}
               {props.lastMessage.length >= MAX_CHARACTERS

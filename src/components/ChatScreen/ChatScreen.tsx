@@ -66,9 +66,7 @@ const ChatScreen = (props: ChatScreenProps) => {
           </TouchableOpacity>
           <Avatar name="Andrew Parker" />
           <View style={styles.chatTitleContainer}>
-            <Text style={styles.chatTitle}>
-              Andrew Parker ({props.route.params.chatId})
-            </Text>
+            <Text style={styles.chatTitle}>Andrew Parker</Text>
           </View>
           <View style={styles.chatHeaderBackground}></View>
         </View>

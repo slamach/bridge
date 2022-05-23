@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { StatusBar } from 'expo-status-bar';
+import navigationTheme from '../styles/navigationTheme';
 import AuthScreen from './AuthScreen/AuthScreen';
 import ChatListScreen from './ChatListScreen/ChatListScreen';
 import ChatScreen from './ChatScreen/ChatScreen';
@@ -19,7 +20,7 @@ const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
 
   return (
-    <NavigationContainer>
+    <NavigationContainer theme={navigationTheme}>
       {isAuthenticated ? (
         <AppStack.Navigator
           screenOptions={{
