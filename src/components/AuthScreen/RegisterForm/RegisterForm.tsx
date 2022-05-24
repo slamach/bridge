@@ -8,7 +8,7 @@ import { styles } from '../AuthScreenStyles';
 import { useNavigation } from '@react-navigation/native';
 
 const registerValidationSchema = Yup.object().shape({
-  displayName: Yup.string().label('Display name').required(),
+  name: Yup.string().label('Display name').required(),
   username: Yup.string().label('Username').required().min(3),
   password: Yup.string().label('Password').required().min(8),
 });
@@ -31,9 +31,10 @@ const RegisterForm = (props: RegisterFormProps) => {
           password: '',
         }}
         validationSchema={registerValidationSchema}
-        onSubmit={(values) =>
-          props.register(values.name, values.username, values.password)
-        }
+        onSubmit={(values) => {
+          console.log(values);
+          props.register(values.name, values.username, values.password);
+        }}
       >
         {({
           handleChange,
