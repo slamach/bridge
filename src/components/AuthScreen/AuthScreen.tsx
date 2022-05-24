@@ -5,10 +5,9 @@ import LoginForm from './LoginForm/LoginForm';
 import RegisterForm from './RegisterForm/RegisterForm';
 import { styles } from './AuthScreenStyles';
 import { styles as appStyles } from './../AppStyles';
+import { AuthScreenReduxProps } from './AuthScreenContainer';
 
-type AuthScreenProps = {
-  authenticate: () => void;
-};
+type AuthScreenProps = AuthScreenReduxProps;
 
 const AuthScreen = (props: AuthScreenProps) => {
   const [isRegistrationActive, setIsRegistrationActive] =
@@ -21,12 +20,26 @@ const AuthScreen = (props: AuthScreenProps) => {
         {isRegistrationActive ? (
           <RegisterForm
             setLoginActive={() => setIsRegistrationActive(false)}
-            authenticate={props.authenticate}
+            register={(name: string, username: string, password: string) =>
+              props.setUser({
+                id: 1,
+                name: name,
+                username: username,
+                token: '',
+              })
+            }
           />
         ) : (
           <LoginForm
             setRegistrationActive={() => setIsRegistrationActive(true)}
-            authenticate={props.authenticate}
+            login={(username: string, password: string) =>
+              props.setUser({
+                id: 1,
+                name: username,
+                username: username,
+                token: '',
+              })
+            }
           />
         )}
       </View>

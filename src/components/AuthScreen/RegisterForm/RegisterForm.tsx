@@ -15,7 +15,7 @@ const registerValidationSchema = Yup.object().shape({
 
 type RegisterFormProps = {
   setLoginActive: () => void;
-  authenticate: () => void;
+  register: (name: string, username: string, password: string) => void;
 };
 
 const RegisterForm = (props: RegisterFormProps) => {
@@ -26,12 +26,14 @@ const RegisterForm = (props: RegisterFormProps) => {
     <>
       <Formik
         initialValues={{
-          displayName: '',
+          name: '',
           username: '',
           password: '',
         }}
         validationSchema={registerValidationSchema}
-        onSubmit={(values) => props.authenticate()}
+        onSubmit={(values) =>
+          props.register(values.name, values.username, values.password)
+        }
       >
         {({
           handleChange,
@@ -51,9 +53,9 @@ const RegisterForm = (props: RegisterFormProps) => {
                 blurOnSubmit: false,
                 returnKeyType: 'next',
                 textContentType: 'name',
-                value: values.displayName,
-                onChangeText: handleChange('displayName'),
-                onBlur: () => setFieldTouched('displayName'),
+                value: values.name,
+                onChangeText: handleChange('name'),
+                onBlur: () => setFieldTouched('name'),
                 onSubmitEditing: () => {
                   secondInput.current?.focus();
                 },
@@ -97,8 +99,8 @@ const RegisterForm = (props: RegisterFormProps) => {
               }}
               bottomRadius
             />
-            {errors.displayName && touched.displayName ? (
-              <Text style={styles.errorMessage}>{errors.displayName}</Text>
+            {errors.name && touched.name ? (
+              <Text style={styles.errorMessage}>{errors.name}</Text>
             ) : errors.username && touched.username ? (
               <Text style={styles.errorMessage}>{errors.username}</Text>
             ) : errors.password && touched.password ? (

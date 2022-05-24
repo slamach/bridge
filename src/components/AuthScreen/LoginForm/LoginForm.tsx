@@ -14,7 +14,7 @@ const loginValidationSchema = Yup.object().shape({
 
 type LoginFormProps = {
   setRegistrationActive: () => void;
-  authenticate: () => void;
+  login: (username: string, password: string) => void;
 };
 
 const LoginForm = (props: LoginFormProps) => {
@@ -29,7 +29,7 @@ const LoginForm = (props: LoginFormProps) => {
           password: '',
         }}
         validationSchema={loginValidationSchema}
-        onSubmit={(values) => props.authenticate()}
+        onSubmit={(values) => props.login(values.username, values.password)}
       >
         {({
           handleChange,

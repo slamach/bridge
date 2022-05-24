@@ -12,31 +12,15 @@ import Avatar from '../Avatar/Avatar';
 import ChatListItem from './ChatListItem/ChatListItem';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { AppStackParamList } from '../App';
+import { ChatListScreenReduxProps } from './ChatListScreenContainer';
 
 export type ChatListScreenProps = NativeStackScreenProps<
   AppStackParamList,
   'ChatList'
->;
+> &
+  ChatListScreenReduxProps;
 
 const ChatListScreen = (props: ChatListScreenProps) => {
-  const conversations = [
-    {
-      id: 1,
-      name: 'Dmitry Sviridov',
-      lastMessage: "What's up man! How are you today? I wanna see you!",
-      time: '21:03',
-      sentByUser: false,
-    },
-    {
-      id: 2,
-      name: 'Vladislav Kuznetsov',
-      lastMessage:
-        "I'm testing this shit right now and seems like it doesn't work",
-      time: '19.05',
-      sentByUser: true,
-    },
-  ];
-
   return (
     <SafeAreaView style={appStyles.appContainer}>
       <View style={styles.chatsContainer}>
@@ -44,13 +28,13 @@ const ChatListScreen = (props: ChatListScreenProps) => {
           <Text style={styles.chatsTitle}>Chats</Text>
           <TouchableOpacity
             activeOpacity={0.85}
-            onPress={() => console.log('Logout Button Pressed')}
+            onPress={() => props.setUser(null)}
           >
-            <Avatar size={40} name="slamach" />
+            <Avatar size={40} name={props.user!.name} />
           </TouchableOpacity>
         </View>
         <FlatList
-          data={conversations}
+          data={props.chats}
           keyExtractor={(item) => item.id.toString()}
           style={styles.chatList}
           renderItem={({ item }) => (
