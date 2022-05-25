@@ -21,4 +21,11 @@ export const styles = StyleSheet.create({
   chatList: {
     flex: 1,
   },
+  errorMessage: {
+    fontSize: 15,
+    lineHeight: 18,
+    fontWeight: '500',
+    textAlign: 'center',
+    color: colors.text,
+  },
 });

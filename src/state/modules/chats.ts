@@ -4,6 +4,8 @@ import {
   PayloadAction,
   ThunkDispatch,
 } from '@reduxjs/toolkit';
+import axios, { AxiosError } from 'axios';
+import chatsAPI from '../../api/chatsAPI';
 import { RootState } from '../store';
 
 export enum ChatsStatus {
@@ -13,15 +15,21 @@ export enum ChatsStatus {
   FAILED,
 }
 
+type ChatsError = {
+  status: number;
+  data: any;
+};
+
 type ChatsState = {
   status: ChatsStatus;
+  errorMessage: string | null;
   chats:
     | {
-        id: number;
+        id: string;
         name: string;
-        lastMessage: string;
-        time: string;
-        sentByUser: boolean;
+        lastMessage: string | null;
+        time: string | null;
+        sentByUser: boolean | null;
       }[]
     | null;
 };
@@ -30,6 +38,7 @@ const chatsSlice = createSlice({
   name: 'chats',
   initialState: {
     status: ChatsStatus.IDLE,
+    errorMessage: null,
     chats: null,
   } as ChatsState,
   reducers: {
@@ -38,25 +47,24 @@ const chatsSlice = createSlice({
         state.status = ChatsStatus.LOADING;
       }
     },
-    chatsSuccess: (
-      state,
-      action: PayloadAction<
-        {
-          // TODO: Chat DTO from API
-          id: number;
-          name: string;
-          lastMessage: string;
-          time: string;
-          sentByUser: boolean;
-        }[]
-      >
-    ) => {
+    chatsSuccess: (state, action: PayloadAction<ChatsState['chats']>) => {
       state.chats = action.payload;
       if (state.status == ChatsStatus.LOADING) {
         state.status = ChatsStatus.SUCCEEDED;
       }
     },
-    chatsFailure: (state) => {
+    chatsFailure: (state, action: PayloadAction<ChatsError>) => {
+      switch (action.payload.status) {
+        case 0:
+          state.errorMessage = 'Unexpected app error. Try again!';
+          break;
+        case 500:
+          state.errorMessage = 'Unexpected server error. Try again!';
+          break;
+        default:
+          state.errorMessage = 'Unexpected error. Try again!';
+          break;
+      }
       if (state.status == ChatsStatus.LOADING) {
         state.status = ChatsStatus.FAILED;
       }
@@ -68,24 +76,41 @@ export default chatsSlice.reducer;
 export const { chatsRequest, chatsSuccess, chatsFailure } = chatsSlice.actions;
 
 export const getChats =
-  () => async (dispatch: ThunkDispatch<RootState, unknown, AnyAction>) => {
+  () =>
+  async (
+    dispatch: ThunkDispatch<RootState, unknown, AnyAction>,
+    getState: () => RootState
+  ) => {
     dispatch(chatsRequest());
-    const chats = [
-      {
-        id: 1,
-        name: 'Dmitry Sviridov',
-        lastMessage: "What's up man! How are you today? I wanna see you!",
-        time: '21:03',
-        sentByUser: false,
-      },
-      {
-        id: 2,
-        name: 'Vladislav Kuznetsov',
-        lastMessage:
-          "I'm testing this shit right now and seems like it doesn't work",
-        time: '19.05',
-        sentByUser: true,
-      },
-    ];
-    dispatch(chatsSuccess(chats));
+    try {
+      const response = await chatsAPI.getChats(getState().auth.user!.token);
+      // TODO: More chat data from response
+      const chats = response.data.payload.map((item) => ({
+        id: item.id,
+        name: item.participants.filter(
+          (participant) => participant !== getState().auth.user!.id
+        )[0],
+        lastMessage: item.lastMessage ? item.lastMessage.text : null,
+        time: item.lastMessage ? item.lastMessage.date : null,
+        sentByUser: item.lastMessage ? item.lastMessage.sentByUser : null,
+      }));
+
+      dispatch(chatsSuccess(chats));
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        dispatch(
+          chatsFailure({
+            status: error.response!.status,
+            data: error.response!.data,
+          })
+        );
+      } else {
+        dispatch(
+          chatsFailure({
+            status: 0,
+            data: null,
+          })
+        );
+      }
+    }
   };

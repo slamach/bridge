@@ -16,7 +16,7 @@ import { AppStatus } from '../state/modules/app';
 export type AppStackParamList = {
   ChatList: undefined;
   Chat: {
-    chatId: number;
+    chatId: string;
   };
 };
 

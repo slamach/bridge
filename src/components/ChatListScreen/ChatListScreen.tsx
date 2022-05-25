@@ -4,7 +4,7 @@ import {
   FlatList,
   TouchableOpacity,
   SafeAreaView,
-  ActivityIndicator,
+  RefreshControl,
 } from 'react-native';
 import React, { useEffect } from 'react';
 import { styles } from './ChatListScreenStyles';
@@ -14,8 +14,8 @@ import ChatListItem from './ChatListItem/ChatListItem';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { AppStackParamList } from '../App';
 import { ChatListScreenReduxProps } from './ChatListScreenContainer';
-import colors from '../../constants/colors';
 import { ChatsStatus } from '../../state/modules/chats';
+import colors from '../../constants/colors';
 
 export type ChatListScreenProps = NativeStackScreenProps<
   AppStackParamList,
@@ -37,9 +37,6 @@ const ChatListScreen = (props: ChatListScreenProps) => {
             <Avatar size={40} name={props.user!.name} />
           </TouchableOpacity>
         </View>
-        {props.chatsStatus == ChatsStatus.LOADING && (
-          <ActivityIndicator color={colors.text} />
-        )}
         <FlatList
           data={props.chats}
           keyExtractor={(item) => item.id.toString()}
@@ -53,6 +50,21 @@ const ChatListScreen = (props: ChatListScreenProps) => {
               sentByUser={item.sentByUser}
             />
           )}
+          ListEmptyComponent={
+            <Text style={styles.errorMessage}>
+              {props.errorMessage
+                ? props.errorMessage
+                : "There're no chats yet!"}
+            </Text>
+          }
+          refreshControl={
+            <RefreshControl
+              onRefresh={() => props.getChats()}
+              refreshing={props.status == ChatsStatus.LOADING}
+              tintColor={colors.text}
+              colors={[colors.text]}
+            />
+          }
         />
       </View>
     </SafeAreaView>

@@ -6,7 +6,8 @@ import ChatListScreen from './ChatListScreen';
 
 function mapStateToProps(state: RootState) {
   return {
-    chatsStatus: state.chats.status,
+    status: state.chats.status,
+    errorMessage: state.chats.errorMessage,
     user: state.auth.user,
     chats: state.chats.chats,
   };

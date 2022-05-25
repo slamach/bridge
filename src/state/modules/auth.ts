@@ -110,7 +110,6 @@ export const login =
       dispatch(authSuccess(user));
       await SecureStore.setItemAsync(USER_STORAGE_KEY, JSON.stringify(user));
     } catch (error) {
-      console.log((error as AxiosError).response);
       if (axios.isAxiosError(error)) {
         dispatch(
           authFailure({

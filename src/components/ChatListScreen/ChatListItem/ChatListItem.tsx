@@ -6,17 +6,49 @@ import { ChatListScreenProps } from '../ChatListScreen';
 import { useNavigation } from '@react-navigation/native';
 
 type ChatListItemProps = {
-  id: number;
+  id: string;
   name: string;
-  lastMessage: string;
-  time: string;
-  sentByUser: boolean;
+  lastMessage: string | null;
+  time: string | null;
+  sentByUser: boolean | null;
 };
 
 const ChatListItem = (props: ChatListItemProps) => {
   const navigation = useNavigation<ChatListScreenProps['navigation']>();
 
   const MAX_CHARACTERS = 35;
+
+  const isToday = (targetDate: Date) => {
+    const today = new Date();
+    return (
+      targetDate.getDate() == today.getDate() &&
+      targetDate.getMonth() == today.getMonth() &&
+      targetDate.getFullYear() == today.getFullYear()
+    );
+  };
+
+  const getTimeFromDate = (targetDate: Date) => {
+    const hours = targetDate.getHours();
+    const minutes = targetDate.getMinutes();
+
+    return `${hours.toString().length == 1 ? '0' + hours : hours}:${
+      minutes.toString().length == 1 ? '0' + minutes : minutes
+    }`;
+  };
+
+  let lastMessageTime: Date | null = null;
+  if (props.time) {
+    lastMessageTime = new Date(props.time);
+  }
+
+  const getDayAndMonthFromDate = (targetDate: Date) => {
+    const day = targetDate.getDate();
+    const month = targetDate.getMonth() + 1;
+
+    return `${day.toString().length == 1 ? '0' + day : day}.${
+      month.toString().length == 1 ? '0' + month : month
+    }`;
+  };
 
   return (
     // TODO: To do swipes I can use react-native-gesture-handler
@@ -33,18 +65,26 @@ const ChatListItem = (props: ChatListItemProps) => {
           />
           <View>
             <Text style={styles.chatName}>{props.name}</Text>
-            <Text style={styles.lastMessage}>
-              {props.sentByUser ? 'You: ' : ''}
-              {props.lastMessage.length >= MAX_CHARACTERS
-                ? props.lastMessage.slice(
-                    0,
-                    MAX_CHARACTERS - 3 - (props.sentByUser ? 4 : 0)
-                  ) + '...'
-                : props.lastMessage}
-            </Text>
+            {props.lastMessage && (
+              <Text style={styles.lastMessage}>
+                {props.sentByUser ? 'You: ' : ''}
+                {props.lastMessage.length >= MAX_CHARACTERS
+                  ? props.lastMessage.slice(
+                      0,
+                      MAX_CHARACTERS - 3 - (props.sentByUser ? 4 : 0)
+                    ) + '...'
+                  : props.lastMessage}
+              </Text>
+            )}
           </View>
         </View>
-        <Text style={styles.chatTime}>{props.time}</Text>
+        {lastMessageTime && (
+          <Text style={styles.chatTime}>
+            {isToday(lastMessageTime)
+              ? getTimeFromDate(lastMessageTime)
+              : getDayAndMonthFromDate(lastMessageTime)}
+          </Text>
+        )}
       </View>
     </TouchableOpacity>
   );
