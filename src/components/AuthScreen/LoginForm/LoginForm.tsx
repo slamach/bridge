@@ -1,5 +1,5 @@
 import { Text, TextInput } from 'react-native';
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import AuthButton from '../AuthButton/AuthButton';
@@ -12,6 +12,7 @@ const loginValidationSchema = Yup.object().shape({
 });
 
 type LoginFormProps = {
+  errorMessage: string | null;
   setRegistrationActive: () => void;
   login: (username: string, password: string) => void;
 };
@@ -79,7 +80,11 @@ const LoginForm = (props: LoginFormProps) => {
               <Text style={styles.errorMessage}>{errors.username}</Text>
             ) : errors.password && touched.password ? (
               <Text style={styles.errorMessage}>{errors.password}</Text>
-            ) : null}
+            ) : (
+              props.errorMessage && (
+                <Text style={styles.errorMessage}>{props.errorMessage}</Text>
+              )
+            )}
             <AuthButton
               content="Log In"
               highlight

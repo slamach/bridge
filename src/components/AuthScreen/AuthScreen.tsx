@@ -24,6 +24,7 @@ const AuthScreen = (props: AuthScreenProps) => {
           />
         ) : (
           <LoginForm
+            errorMessage={props.errorMessage}
             setRegistrationActive={() => setIsRegistrationActive(true)}
             login={props.login}
           />

@@ -5,7 +5,7 @@ import App from './App';
 
 function mapStateToProps(state: RootState) {
   return {
-    appStatus: state.app.status,
+    status: state.app.status,
     user: state.auth.user,
   };
 }

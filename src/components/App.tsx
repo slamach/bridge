@@ -34,12 +34,12 @@ const App = (props: AppProps) => {
   }, []);
 
   const onRootReady = useCallback(async () => {
-    if (props.appStatus != AppStatus.LOADING) {
+    if (props.status != AppStatus.LOADING) {
       await SplashScreen.hideAsync();
     }
-  }, [props.appStatus]);
+  }, [props.status]);
 
-  if (props.appStatus == AppStatus.LOADING) {
+  if (props.status == AppStatus.LOADING) {
     return null;
   }
 

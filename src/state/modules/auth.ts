@@ -4,7 +4,9 @@ import {
   PayloadAction,
   ThunkDispatch,
 } from '@reduxjs/toolkit';
+import axios, { AxiosError } from 'axios';
 import * as SecureStore from 'expo-secure-store';
+import authAPI from '../../api/authAPI';
 import { USER_STORAGE_KEY } from '../../constants/constants';
 import { RootState } from '../store';
 
@@ -15,11 +17,16 @@ export enum AuthStatus {
   FAILED,
 }
 
+type AuthError = {
+  status: number;
+  data: any;
+};
+
 export type AuthState = {
   status: AuthStatus;
   errorMessage: string | null;
   user: {
-    id: number;
+    id: string;
     name: string;
     username: string;
     token: string;
@@ -42,29 +49,31 @@ const authSlice = createSlice({
         state.status = AuthStatus.LOADING;
       }
     },
-    authSuccess: (
-      state,
-      action: PayloadAction<{
-        // TODO: User DTO from API
-        id: number;
-        name: string;
-        username: string;
-        token: string;
-      }>
-    ) => {
+    authSuccess: (state, action: PayloadAction<AuthState['user']>) => {
       state.user = action.payload;
       if (state.status == AuthStatus.LOADING) {
         state.status = AuthStatus.SUCCEEDED;
       }
     },
-    authFailure: (
-      state,
-      action: PayloadAction<{
-        // TODO: Error DTO from API
-        message: string;
-      }>
-    ) => {
-      state.errorMessage = action.payload.message;
+    authFailure: (state, action: PayloadAction<AuthError>) => {
+      switch (action.payload.status) {
+        case 400:
+          switch (action.payload.data.code) {
+            case 1:
+              state.errorMessage = 'Invalid username or password.';
+              break;
+          }
+          break;
+        case 0:
+          state.errorMessage = 'Unexpected app error. Try again!';
+          break;
+        case 500:
+          state.errorMessage = 'Unexpected server error. Try again!';
+          break;
+        default:
+          state.errorMessage = 'Unexpected error. Try again!';
+          break;
+      }
       if (state.status == AuthStatus.LOADING) {
         state.status = AuthStatus.FAILED;
       }
@@ -89,28 +98,69 @@ export const login =
   (username: string, password: string) =>
   async (dispatch: ThunkDispatch<RootState, unknown, AnyAction>) => {
     dispatch(authRequest());
-    const user = {
-      id: 1,
-      name: username,
-      username: username,
-      token: '',
-    };
-    dispatch(authSuccess(user));
-    await SecureStore.setItemAsync(USER_STORAGE_KEY, JSON.stringify(user));
+    try {
+      const response = await authAPI.login(username, password);
+      // TODO: More user data from response
+      const user = {
+        id: response.data.payload.userId,
+        name: username,
+        username: username,
+        token: response.data.payload.token,
+      };
+      dispatch(authSuccess(user));
+      await SecureStore.setItemAsync(USER_STORAGE_KEY, JSON.stringify(user));
+    } catch (error) {
+      console.log((error as AxiosError).response);
+      if (axios.isAxiosError(error)) {
+        dispatch(
+          authFailure({
+            status: error.response!.status,
+            data: error.response!.data,
+          })
+        );
+      } else {
+        dispatch(
+          authFailure({
+            status: 0,
+            data: null,
+          })
+        );
+      }
+    }
   };
 
 export const register =
   (name: string, username: string, password: string) =>
   async (dispatch: ThunkDispatch<RootState, unknown, AnyAction>) => {
     dispatch(authRequest());
-    const user = {
-      id: 1,
-      name: name,
-      username: username,
-      token: '',
-    };
-    dispatch(authSuccess(user));
-    await SecureStore.setItemAsync(USER_STORAGE_KEY, JSON.stringify(user));
+    try {
+      const response = await authAPI.register(name, username, password);
+      // TODO: More user data from response
+      const user = {
+        id: response.data.payload.userId,
+        name: name,
+        username: username,
+        token: response.data.payload.token,
+      };
+      dispatch(authSuccess(user));
+      await SecureStore.setItemAsync(USER_STORAGE_KEY, JSON.stringify(user));
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        dispatch(
+          authFailure({
+            status: error.response!.status,
+            data: error.response!.data,
+          })
+        );
+      } else {
+        dispatch(
+          authFailure({
+            status: 0,
+            data: null,
+          })
+        );
+      }
+    }
   };
 
 export const logout =
