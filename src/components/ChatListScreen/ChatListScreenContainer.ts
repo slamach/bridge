@@ -1,6 +1,6 @@
 import { connect, ConnectedProps } from 'react-redux';
 import { logout } from '../../state/modules/auth';
-import { getChats } from '../../state/modules/chats';
+import { getChats, changeActiveChatId } from '../../state/modules/chats';
 import { RootState } from '../../state/store';
 import ChatListScreen from './ChatListScreen';
 
@@ -16,6 +16,7 @@ function mapStateToProps(state: RootState) {
 const mapDispatchToProps = {
   getChats,
   logout,
+  changeActiveChatId,
 };
 
 const connector = connect(mapStateToProps, mapDispatchToProps);

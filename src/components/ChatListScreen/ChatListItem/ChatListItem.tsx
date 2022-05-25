@@ -11,6 +11,7 @@ type ChatListItemProps = {
   lastMessage: string | null;
   time: string | null;
   sentByUser: boolean | null;
+  changeActiveChatId: (chatId: string) => void;
 };
 
 const ChatListItem = (props: ChatListItemProps) => {
@@ -54,7 +55,10 @@ const ChatListItem = (props: ChatListItemProps) => {
     // TODO: To do swipes I can use react-native-gesture-handler
     <TouchableOpacity
       activeOpacity={0.85}
-      onPress={() => navigation.navigate('Chat', { chatId: props.id })}
+      onPress={() => {
+        props.changeActiveChatId(props.id);
+        navigation.navigate('Chat', { chatId: props.id });
+      }}
     >
       <View>
         <View style={styles.chatContainer}>

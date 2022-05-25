@@ -17,10 +17,18 @@ import { styles } from './ChatScreenStyles';
 import { styles as appStyles } from './../AppStyles';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { AppStackParamList } from '../App';
+import { ChatScreenReduxProps } from './ChatScreenContainer';
 
-export type ChatScreenProps = NativeStackScreenProps<AppStackParamList, 'Chat'>;
+export type ChatScreenProps = NativeStackScreenProps<
+  AppStackParamList,
+  'Chat'
+> &
+  ChatScreenReduxProps;
 
 const ChatScreen = (props: ChatScreenProps) => {
+  props.navigation.addListener('beforeRemove', () => {
+    props.clearActiveChatId();
+  });
   const messages = [
     {
       id: 1,

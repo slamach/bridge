@@ -6,7 +6,7 @@ import * as SplashScreen from 'expo-splash-screen';
 import navigationTheme from '../constants/navigationTheme';
 import AuthScreen from './AuthScreen/AuthScreenContainer';
 import ChatListScreen from './ChatListScreen/ChatListScreenContainer';
-import ChatScreen from './ChatScreen/ChatScreen';
+import ChatScreen from './ChatScreen/ChatScreenContainer';
 import { Provider } from 'react-redux';
 import { store } from '../state/store';
 import { AppReduxProps } from './AppContainer';

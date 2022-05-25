@@ -4,7 +4,7 @@ import {
   PayloadAction,
   ThunkDispatch,
 } from '@reduxjs/toolkit';
-import axios, { AxiosError } from 'axios';
+import axios from 'axios';
 import * as SecureStore from 'expo-secure-store';
 import authAPI from '../../api/authAPI';
 import { USER_STORAGE_KEY } from '../../constants/constants';

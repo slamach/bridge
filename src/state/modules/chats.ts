@@ -4,7 +4,7 @@ import {
   PayloadAction,
   ThunkDispatch,
 } from '@reduxjs/toolkit';
-import axios, { AxiosError } from 'axios';
+import axios from 'axios';
 import chatsAPI from '../../api/chatsAPI';
 import { RootState } from '../store';
 
@@ -32,6 +32,7 @@ type ChatsState = {
         sentByUser: boolean | null;
       }[]
     | null;
+  activeChatId: string | null;
 };
 
 const chatsSlice = createSlice({
@@ -69,11 +70,24 @@ const chatsSlice = createSlice({
         state.status = ChatsStatus.FAILED;
       }
     },
+    changeActiveChatId: (state, action: PayloadAction<string>) => {
+      state.activeChatId = action.payload;
+    },
+    clearActiveChatId: (state) => {
+      console.log(123);
+      state.activeChatId = null;
+    },
   },
 });
 
 export default chatsSlice.reducer;
-export const { chatsRequest, chatsSuccess, chatsFailure } = chatsSlice.actions;
+export const {
+  chatsRequest,
+  chatsSuccess,
+  chatsFailure,
+  changeActiveChatId,
+  clearActiveChatId,
+} = chatsSlice.actions;
 
 export const getChats =
   () =>
