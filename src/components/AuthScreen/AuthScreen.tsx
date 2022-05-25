@@ -13,10 +13,6 @@ const AuthScreen = (props: AuthScreenProps) => {
   const [isRegistrationActive, setIsRegistrationActive] =
     useState<boolean>(false);
 
-  useEffect(() => {
-    props.initAuth();
-  });
-
   return (
     <SafeAreaView style={appStyles.appContainer}>
       <View style={styles.authContainer}>

@@ -31,7 +31,6 @@ const RegisterForm = (props: RegisterFormProps) => {
         }}
         validationSchema={registerValidationSchema}
         onSubmit={(values) => {
-          console.log(values);
           props.register(values.name, values.username, values.password);
         }}
       >

@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import React from 'react';
-import colors from '../../styles/colors';
+import colors from '../../constants/colors';
 import Avatar from '../Avatar/Avatar';
 import Message from './Message/Message';
 import { styles } from './ChatScreenStyles';

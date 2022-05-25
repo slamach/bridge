@@ -1,16 +1,19 @@
 import { connect, ConnectedProps } from 'react-redux';
-import { logout } from '../../state/modules/app';
+import { logout } from '../../state/modules/auth';
+import { getChats } from '../../state/modules/chats';
 import { RootState } from '../../state/store';
 import ChatListScreen from './ChatListScreen';
 
 function mapStateToProps(state: RootState) {
   return {
-    user: state.app.user,
-    chats: state.app.chats,
+    chatsStatus: state.chats.status,
+    user: state.auth.user,
+    chats: state.chats.chats,
   };
 }
 
 const mapDispatchToProps = {
+  getChats,
   logout,
 };
 

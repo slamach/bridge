@@ -1,9 +1,8 @@
 import { connect, ConnectedProps } from 'react-redux';
-import { initAuth, login, register } from '../../state/modules/app';
+import { login, register } from '../../state/modules/auth';
 import AuthScreen from './AuthScreen';
 
 const mapDispatchToProps = {
-  initAuth,
   login,
   register,
 };

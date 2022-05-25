@@ -4,8 +4,9 @@ import {
   FlatList,
   TouchableOpacity,
   SafeAreaView,
+  ActivityIndicator,
 } from 'react-native';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { styles } from './ChatListScreenStyles';
 import { styles as appStyles } from './../AppStyles';
 import Avatar from '../Avatar/Avatar';
@@ -13,6 +14,8 @@ import ChatListItem from './ChatListItem/ChatListItem';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { AppStackParamList } from '../App';
 import { ChatListScreenReduxProps } from './ChatListScreenContainer';
+import colors from '../../constants/colors';
+import { ChatsStatus } from '../../state/modules/chats';
 
 export type ChatListScreenProps = NativeStackScreenProps<
   AppStackParamList,
@@ -21,6 +24,10 @@ export type ChatListScreenProps = NativeStackScreenProps<
   ChatListScreenReduxProps;
 
 const ChatListScreen = (props: ChatListScreenProps) => {
+  useEffect(() => {
+    props.getChats();
+  }, []);
+
   return (
     <SafeAreaView style={appStyles.appContainer}>
       <View style={styles.chatsContainer}>
@@ -30,6 +37,9 @@ const ChatListScreen = (props: ChatListScreenProps) => {
             <Avatar size={40} name={props.user!.name} />
           </TouchableOpacity>
         </View>
+        {props.chatsStatus == ChatsStatus.LOADING && (
+          <ActivityIndicator color={colors.text} />
+        )}
         <FlatList
           data={props.chats}
           keyExtractor={(item) => item.id.toString()}

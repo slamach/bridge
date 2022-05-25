@@ -1,7 +1,7 @@
 import { View, TextInput, TextInputProps } from 'react-native';
 import React, { ForwardedRef, forwardRef } from 'react';
 import { styles } from './AuthInputStyles';
-import colors from '../../../styles/colors';
+import colors from '../../../constants/colors';
 
 type AuthInputProps = {
   inputProps?: TextInputProps;
