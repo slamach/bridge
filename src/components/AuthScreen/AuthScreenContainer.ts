@@ -1,9 +1,11 @@
 import { connect, ConnectedProps } from 'react-redux';
-import { setUser } from '../../state/modules/app';
+import { initAuth, login, register } from '../../state/modules/app';
 import AuthScreen from './AuthScreen';
 
 const mapDispatchToProps = {
-  setUser,
+  initAuth,
+  login,
+  register,
 };
 
 const connector = connect(null, mapDispatchToProps);

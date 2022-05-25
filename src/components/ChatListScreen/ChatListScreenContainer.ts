@@ -1,5 +1,5 @@
 import { connect, ConnectedProps } from 'react-redux';
-import { setUser } from '../../state/modules/app';
+import { logout } from '../../state/modules/app';
 import { RootState } from '../../state/store';
 import ChatListScreen from './ChatListScreen';
 
@@ -11,7 +11,7 @@ function mapStateToProps(state: RootState) {
 }
 
 const mapDispatchToProps = {
-  setUser,
+  logout,
 };
 
 const connector = connect(mapStateToProps, mapDispatchToProps);

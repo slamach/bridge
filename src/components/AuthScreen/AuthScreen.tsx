@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { SafeAreaView, View } from 'react-native';
 import Logo from '../../assets/images/logo.svg';
 import LoginForm from './LoginForm/LoginForm';
@@ -13,6 +13,10 @@ const AuthScreen = (props: AuthScreenProps) => {
   const [isRegistrationActive, setIsRegistrationActive] =
     useState<boolean>(false);
 
+  useEffect(() => {
+    props.initAuth();
+  });
+
   return (
     <SafeAreaView style={appStyles.appContainer}>
       <View style={styles.authContainer}>
@@ -20,26 +24,12 @@ const AuthScreen = (props: AuthScreenProps) => {
         {isRegistrationActive ? (
           <RegisterForm
             setLoginActive={() => setIsRegistrationActive(false)}
-            register={(name: string, username: string, password: string) =>
-              props.setUser({
-                id: 1,
-                name: name,
-                username: username,
-                token: '',
-              })
-            }
+            register={props.register}
           />
         ) : (
           <LoginForm
             setRegistrationActive={() => setIsRegistrationActive(true)}
-            login={(username: string, password: string) =>
-              props.setUser({
-                id: 1,
-                name: username,
-                username: username,
-                token: '',
-              })
-            }
+            login={props.login}
           />
         )}
       </View>

@@ -5,11 +5,10 @@ import * as Yup from 'yup';
 import AuthButton from '../AuthButton/AuthButton';
 import AuthInput from '../AuthInput/AuthInput';
 import { styles } from '../AuthScreenStyles';
-import { useNavigation } from '@react-navigation/native';
 
 const loginValidationSchema = Yup.object().shape({
-  username: Yup.string().label('Username').required(),
-  password: Yup.string().label('Password').required(),
+  username: Yup.string().label('Username').required().min(4),
+  password: Yup.string().label('Password').required().min(8),
 });
 
 type LoginFormProps = {

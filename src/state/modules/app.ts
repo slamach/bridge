@@ -1,4 +1,11 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import {
+  AnyAction,
+  createSlice,
+  PayloadAction,
+  ThunkDispatch,
+} from '@reduxjs/toolkit';
+import * as SecureStore from 'expo-secure-store';
+import { RootState } from '../store';
 
 type AppState = {
   user: {
@@ -50,3 +57,44 @@ const appSlice = createSlice({
 
 export default appSlice.reducer;
 export const { setUser, setChats } = appSlice.actions;
+
+const USER_STORAGE_KEY = 'userData';
+
+export const initAuth =
+  () => async (dispatch: ThunkDispatch<RootState, unknown, AnyAction>) => {
+    const userFromStorage = await SecureStore.getItemAsync(USER_STORAGE_KEY);
+    if (userFromStorage) {
+      dispatch(setUser(JSON.parse(userFromStorage)));
+    }
+  };
+
+export const login =
+  (username: string, password: string) =>
+  async (dispatch: ThunkDispatch<RootState, unknown, AnyAction>) => {
+    const user = {
+      id: 1,
+      name: username,
+      username: username,
+      token: '',
+    };
+    dispatch(setUser(user));
+    await SecureStore.setItemAsync(USER_STORAGE_KEY, JSON.stringify(user));
+  };
+
+export const register =
+  (name: string, username: string, password: string) =>
+  async (dispatch: ThunkDispatch<RootState, unknown, AnyAction>) => {
+    const user = {
+      id: 1,
+      name: name,
+      username: username,
+      token: '',
+    };
+    dispatch(setUser(user));
+    await SecureStore.setItemAsync(USER_STORAGE_KEY, JSON.stringify(user));
+  };
+
+export const logout =
+  () => async (dispatch: ThunkDispatch<RootState, unknown, AnyAction>) => {
+    await SecureStore.setItemAsync(USER_STORAGE_KEY, '');
+  };

@@ -26,10 +26,7 @@ const ChatListScreen = (props: ChatListScreenProps) => {
       <View style={styles.chatsContainer}>
         <View style={styles.chatsHeader}>
           <Text style={styles.chatsTitle}>Chats</Text>
-          <TouchableOpacity
-            activeOpacity={0.85}
-            onPress={() => props.setUser(null)}
-          >
+          <TouchableOpacity activeOpacity={0.85} onPress={props.logout}>
             <Avatar size={40} name={props.user!.name} />
           </TouchableOpacity>
         </View>
