@@ -100,11 +100,10 @@ export const login =
     dispatch(authRequest());
     try {
       const response = await authAPI.login(username, password);
-      // TODO: More user data from response
       const user = {
-        id: response.data.payload.userId,
-        name: username,
-        username: username,
+        id: response.data.payload.user.id,
+        name: response.data.payload.user.name,
+        username: response.data.payload.user.username,
         token: response.data.payload.token,
       };
       dispatch(authSuccess(user));
@@ -134,11 +133,10 @@ export const register =
     dispatch(authRequest());
     try {
       const response = await authAPI.register(name, username, password);
-      // TODO: More user data from response
       const user = {
-        id: response.data.payload.userId,
-        name: name,
-        username: username,
+        id: response.data.payload.user.id,
+        name: response.data.payload.user.name,
+        username: response.data.payload.user.username,
         token: response.data.payload.token,
       };
       dispatch(authSuccess(user));

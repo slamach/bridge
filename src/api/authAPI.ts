@@ -8,7 +8,11 @@ const authAPI = {
   async login(username: string, password: string) {
     return axiosInstance.post<{
       payload: {
-        userId: string;
+        user: {
+          id: string;
+          name: string;
+          username: string;
+        };
         token: string;
       };
     }>('login', { username, password });
@@ -16,7 +20,11 @@ const authAPI = {
   async register(name: string, username: string, password: string) {
     return axiosInstance.post<{
       payload: {
-        userId: string;
+        user: {
+          id: string;
+          name: string;
+          username: string;
+        };
         token: string;
       };
     }>('register', { name, username, password });

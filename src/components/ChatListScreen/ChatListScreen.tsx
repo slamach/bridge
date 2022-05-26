@@ -48,7 +48,6 @@ const ChatListScreen = (props: ChatListScreenProps) => {
               lastMessage={item.lastMessage}
               time={item.time}
               sentByUser={item.sentByUser}
-              changeActiveChatId={props.changeActiveChatId}
             />
           )}
           ListEmptyComponent={

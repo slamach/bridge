@@ -7,9 +7,10 @@ import {
   KeyboardAvoidingView,
   Platform,
   SafeAreaView,
+  RefreshControl,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import colors from '../../constants/colors';
 import Avatar from '../Avatar/Avatar';
 import Message from './Message/Message';
@@ -18,6 +19,7 @@ import { styles as appStyles } from './../AppStyles';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { AppStackParamList } from '../App';
 import { ChatScreenReduxProps } from './ChatScreenContainer';
+import { MessagesStatus, sendMessage } from '../../state/modules/messages';
 
 export type ChatScreenProps = NativeStackScreenProps<
   AppStackParamList,
@@ -26,37 +28,22 @@ export type ChatScreenProps = NativeStackScreenProps<
   ChatScreenReduxProps;
 
 const ChatScreen = (props: ChatScreenProps) => {
-  props.navigation.addListener('beforeRemove', () => {
-    props.clearActiveChatId();
-  });
-  const messages = [
-    {
-      id: 1,
-      content:
-        "Hi! how are you? I'm doing great! Hi! how are you? I'm doing great! Hi! how are you? I'm doing great!",
-      time: '19.05',
-      sentByUser: false,
-    },
-    {
-      id: 2,
-      content: 'Hi! how are you?',
-      time: '19:37',
-      sentByUser: false,
-    },
-    {
-      id: 3,
-      content:
-        "Hi! how are you? I'm doing great! Hi! how are you? I'm doing great! Hi! how are you? I'm doing great!",
-      time: '19:48',
-      sentByUser: true,
-    },
-    {
-      id: 4,
-      content: 'Hi! how are you?',
-      time: '19:51',
-      sentByUser: true,
-    },
-  ];
+  useEffect(() => {
+    props.changeActiveChatId(props.route.params.chatId);
+    props.getMessages(props.route.params.chatId);
+    return () => {
+      props.clearActiveChatId();
+    };
+  }, []);
+
+  const [inputMessage, setInputMessage] = useState<string>('');
+
+  const handleMessageSending = () => {
+    if (inputMessage) {
+      props.sendMessage(props.route.params.chatId, inputMessage);
+      setInputMessage('');
+    }
+  };
 
   return (
     // TODO: Multiline input
@@ -79,7 +66,8 @@ const ChatScreen = (props: ChatScreenProps) => {
           <View style={styles.chatHeaderBackground}></View>
         </View>
         <FlatList
-          data={messages.reverse()}
+          data={props.messages}
+          extraData={props.messages}
           keyExtractor={(item) => item.id.toString()}
           style={styles.messageList}
           inverted
@@ -90,6 +78,14 @@ const ChatScreen = (props: ChatScreenProps) => {
               sentByUser={item.sentByUser}
             />
           )}
+          refreshControl={
+            <RefreshControl
+              onRefresh={() => props.getMessages(props.route.params.chatId)}
+              refreshing={props.status == MessagesStatus.LOADING}
+              tintColor={colors.text}
+              colors={[colors.text]}
+            />
+          }
         />
         <View style={styles.chatFooter}>
           <TextInput
@@ -98,11 +94,14 @@ const ChatScreen = (props: ChatScreenProps) => {
             placeholderTextColor="#8e8e93"
             blurOnSubmit={false}
             returnKeyType="send"
+            value={inputMessage}
+            onChangeText={(text) => setInputMessage(text)}
+            onSubmitEditing={handleMessageSending}
           />
           <TouchableOpacity
             activeOpacity={0.85}
             style={styles.sendButton}
-            onPress={() => console.log('Send Button Pressed')}
+            onPress={handleMessageSending}
           >
             <Ionicons name="arrow-up" size={24} color={colors.text} />
           </TouchableOpacity>

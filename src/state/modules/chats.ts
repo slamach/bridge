@@ -70,24 +70,11 @@ const chatsSlice = createSlice({
         state.status = ChatsStatus.FAILED;
       }
     },
-    changeActiveChatId: (state, action: PayloadAction<string>) => {
-      state.activeChatId = action.payload;
-    },
-    clearActiveChatId: (state) => {
-      console.log(123);
-      state.activeChatId = null;
-    },
   },
 });
 
 export default chatsSlice.reducer;
-export const {
-  chatsRequest,
-  chatsSuccess,
-  chatsFailure,
-  changeActiveChatId,
-  clearActiveChatId,
-} = chatsSlice.actions;
+export const { chatsRequest, chatsSuccess, chatsFailure } = chatsSlice.actions;
 
 export const getChats =
   () =>
@@ -98,12 +85,9 @@ export const getChats =
     dispatch(chatsRequest());
     try {
       const response = await chatsAPI.getChats(getState().auth.user!.token);
-      // TODO: More chat data from response
       const chats = response.data.payload.map((item) => ({
         id: item.id,
-        name: item.participants.filter(
-          (participant) => participant !== getState().auth.user!.id
-        )[0],
+        name: item.participantDtoList[0].name,
         lastMessage: item.lastMessage ? item.lastMessage.text : null,
         time: item.lastMessage ? item.lastMessage.date : null,
         sentByUser: item.lastMessage ? item.lastMessage.sentByUser : null,

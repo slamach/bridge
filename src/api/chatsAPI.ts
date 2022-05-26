@@ -9,7 +9,11 @@ const chatsAPI = {
     return axiosInstance.get<{
       payload: {
         id: string;
-        participants: string[];
+        participantDtoList: {
+          id: string;
+          name: string;
+          username: string;
+        }[];
         lastMessage: {
           id: string;
           text: string;

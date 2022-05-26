@@ -1,6 +1,11 @@
 import { View, Text } from 'react-native';
 import React from 'react';
 import { styles } from './MessageStyles';
+import {
+  getDayAndMonthFromDate,
+  getTimeFromDate,
+  isToday,
+} from '../../ChatListScreen/ChatListItem/ChatListItem';
 
 type MessageProps = {
   content: string;
@@ -9,6 +14,8 @@ type MessageProps = {
 };
 
 const Message = (props: MessageProps) => {
+  const messageTime = new Date(props.time);
+
   return (
     <View
       style={[
@@ -26,7 +33,11 @@ const Message = (props: MessageProps) => {
       >
         <Text style={styles.messageContent}>{props.content}</Text>
       </View>
-      <Text style={styles.messageTime}>{props.time}</Text>
+      <Text style={styles.messageTime}>
+        {isToday(messageTime)
+          ? getTimeFromDate(messageTime)
+          : getDayAndMonthFromDate(messageTime)}
+      </Text>
     </View>
   );
 };
