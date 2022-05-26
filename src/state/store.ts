@@ -1,4 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit';
+import webSocketMiddleware from '../components/middleware/webSocketMiddleware';
 import appReducer from './modules/app';
 import authReducer from './modules/auth';
 import chatsReducer from './modules/chats';
@@ -10,6 +11,9 @@ export const store = configureStore({
     auth: authReducer,
     chats: chatsReducer,
     messages: messagesReducer,
+  },
+  middleware: (getDefaultMiddleware) => {
+    return getDefaultMiddleware().concat([webSocketMiddleware]);
   },
 });
 

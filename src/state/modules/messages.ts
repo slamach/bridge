@@ -5,6 +5,7 @@ import {
   ThunkDispatch,
 } from '@reduxjs/toolkit';
 import axios from 'axios';
+import { string } from 'yup';
 import messagesAPI from '../../api/messagesAPI';
 import { RootState } from '../store';
 
@@ -44,7 +45,10 @@ const messagesSlice = createSlice({
   } as MessagesState,
   reducers: {
     messagesRequest: (state) => {
-      if (state.status == MessagesStatus.IDLE) {
+      if (
+        state.status === MessagesStatus.IDLE ||
+        state.status === MessagesStatus.SUCCEEDED
+      ) {
         state.status = MessagesStatus.LOADING;
       }
     },
@@ -53,7 +57,7 @@ const messagesSlice = createSlice({
       action: PayloadAction<MessagesState['messages']>
     ) => {
       state.messages = action.payload;
-      if (state.status == MessagesStatus.LOADING) {
+      if (state.status === MessagesStatus.LOADING) {
         state.status = MessagesStatus.SUCCEEDED;
       }
     },
@@ -69,7 +73,10 @@ const messagesSlice = createSlice({
           state.errorMessage = 'Unexpected error. Try again!';
           break;
       }
-      if (state.status == MessagesStatus.LOADING) {
+      if (
+        state.status === MessagesStatus.LOADING ||
+        state.status === MessagesStatus.SUCCEEDED
+      ) {
         state.status = MessagesStatus.FAILED;
       }
     },
@@ -80,6 +87,37 @@ const messagesSlice = createSlice({
       state.activeChatId = null;
       state.messages = null;
     },
+    establishWebSocketConnection: (state) => {
+      if (
+        state.status === MessagesStatus.IDLE ||
+        state.status === MessagesStatus.SUCCEEDED
+      ) {
+        state.status = MessagesStatus.LOADING;
+      }
+    },
+    webSocketConnectionEstablished: (state) => {
+      if (state.status === MessagesStatus.LOADING) {
+        state.status = MessagesStatus.SUCCEEDED;
+      }
+    },
+    initiateMessageRecieving: (
+      state,
+      action: PayloadAction<{
+        id: string;
+        content: string;
+        time: string;
+        sentByUser: boolean;
+      }>
+    ) => {
+      state.messages?.unshift(action.payload);
+    },
+    initiateMessageSending: (
+      state,
+      action: PayloadAction<{
+        chatId: string;
+        message: string;
+      }>
+    ) => {},
   },
 });
 
@@ -90,6 +128,10 @@ export const {
   messagesFailure,
   changeActiveChatId,
   clearActiveChatId,
+  establishWebSocketConnection,
+  webSocketConnectionEstablished,
+  initiateMessageRecieving,
+  initiateMessageSending,
 } = messagesSlice.actions;
 
 export const getMessages =

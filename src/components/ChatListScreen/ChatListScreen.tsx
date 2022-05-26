@@ -26,6 +26,7 @@ export type ChatListScreenProps = NativeStackScreenProps<
 const ChatListScreen = (props: ChatListScreenProps) => {
   useEffect(() => {
     props.getChats();
+    props.establishWebSocketConnection();
   }, []);
 
   return (
@@ -60,7 +61,7 @@ const ChatListScreen = (props: ChatListScreenProps) => {
           refreshControl={
             <RefreshControl
               onRefresh={() => props.getChats()}
-              refreshing={props.status == ChatsStatus.LOADING}
+              refreshing={props.status === ChatsStatus.LOADING}
               tintColor={colors.text}
               colors={[colors.text]}
             />

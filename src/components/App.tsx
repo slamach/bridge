@@ -17,6 +17,7 @@ export type AppStackParamList = {
   ChatList: undefined;
   Chat: {
     chatId: string;
+    name: string;
   };
 };
 
@@ -34,12 +35,12 @@ const App = (props: AppProps) => {
   }, []);
 
   const onRootReady = useCallback(async () => {
-    if (props.status != AppStatus.LOADING) {
+    if (props.status !== AppStatus.LOADING) {
       await SplashScreen.hideAsync();
     }
   }, [props.status]);
 
-  if (props.status == AppStatus.LOADING) {
+  if (props.status === AppStatus.LOADING) {
     return null;
   }
 

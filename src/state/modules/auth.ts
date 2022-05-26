@@ -45,13 +45,13 @@ const authSlice = createSlice({
       state.user = action.payload;
     },
     authRequest: (state) => {
-      if (state.status == AuthStatus.IDLE) {
+      if (state.status === AuthStatus.IDLE) {
         state.status = AuthStatus.LOADING;
       }
     },
     authSuccess: (state, action: PayloadAction<AuthState['user']>) => {
       state.user = action.payload;
-      if (state.status == AuthStatus.LOADING) {
+      if (state.status === AuthStatus.LOADING) {
         state.status = AuthStatus.SUCCEEDED;
       }
     },
@@ -74,7 +74,7 @@ const authSlice = createSlice({
           state.errorMessage = 'Unexpected error. Try again!';
           break;
       }
-      if (state.status == AuthStatus.LOADING) {
+      if (state.status === AuthStatus.LOADING) {
         state.status = AuthStatus.FAILED;
       }
     },

@@ -22,12 +22,12 @@ const appSlice = createSlice({
   } as AppState,
   reducers: {
     authInitLoading: (state) => {
-      if (state.status == AppStatus.IDLE) {
+      if (state.status === AppStatus.IDLE) {
         state.status = AppStatus.LOADING;
       }
     },
     authInitLoaded: (state) => {
-      if (state.status == AppStatus.LOADING) {
+      if (state.status === AppStatus.LOADING) {
         state.status = AppStatus.SUCCEEDED;
       }
     },

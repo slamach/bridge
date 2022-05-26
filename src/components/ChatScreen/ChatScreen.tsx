@@ -11,6 +11,8 @@ import {
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import React, { useEffect, useState } from 'react';
+import { Client } from '@stomp/stompjs';
+import SockJS from 'sockjs-client';
 import colors from '../../constants/colors';
 import Avatar from '../Avatar/Avatar';
 import Message from './Message/Message';
@@ -19,7 +21,7 @@ import { styles as appStyles } from './../AppStyles';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { AppStackParamList } from '../App';
 import { ChatScreenReduxProps } from './ChatScreenContainer';
-import { MessagesStatus, sendMessage } from '../../state/modules/messages';
+import { MessagesStatus } from '../../state/modules/messages';
 
 export type ChatScreenProps = NativeStackScreenProps<
   AppStackParamList,
@@ -40,7 +42,10 @@ const ChatScreen = (props: ChatScreenProps) => {
 
   const handleMessageSending = () => {
     if (inputMessage) {
-      props.sendMessage(props.route.params.chatId, inputMessage);
+      props.initiateMessageSending({
+        chatId: props.route.params.chatId,
+        message: inputMessage,
+      });
       setInputMessage('');
     }
   };
@@ -59,9 +64,9 @@ const ChatScreen = (props: ChatScreenProps) => {
           >
             <Ionicons name="chevron-back" size={35} color={colors.highlight} />
           </TouchableOpacity>
-          <Avatar name="Andrew Parker" />
+          <Avatar name={props.route.params.name} />
           <View style={styles.chatTitleContainer}>
-            <Text style={styles.chatTitle}>Andrew Parker</Text>
+            <Text style={styles.chatTitle}>{props.route.params.name}</Text>
           </View>
           <View style={styles.chatHeaderBackground}></View>
         </View>
@@ -81,7 +86,7 @@ const ChatScreen = (props: ChatScreenProps) => {
           refreshControl={
             <RefreshControl
               onRefresh={() => props.getMessages(props.route.params.chatId)}
-              refreshing={props.status == MessagesStatus.LOADING}
+              refreshing={props.status === MessagesStatus.LOADING}
               tintColor={colors.text}
               colors={[colors.text]}
             />

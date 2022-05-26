@@ -5,6 +5,7 @@ import {
   ThunkDispatch,
 } from '@reduxjs/toolkit';
 import axios from 'axios';
+import { string } from 'yup';
 import chatsAPI from '../../api/chatsAPI';
 import { RootState } from '../store';
 
@@ -44,13 +45,13 @@ const chatsSlice = createSlice({
   } as ChatsState,
   reducers: {
     chatsRequest: (state) => {
-      if (state.status == ChatsStatus.IDLE) {
+      if (state.status === ChatsStatus.IDLE) {
         state.status = ChatsStatus.LOADING;
       }
     },
     chatsSuccess: (state, action: PayloadAction<ChatsState['chats']>) => {
       state.chats = action.payload;
-      if (state.status == ChatsStatus.LOADING) {
+      if (state.status === ChatsStatus.LOADING) {
         state.status = ChatsStatus.SUCCEEDED;
       }
     },
@@ -66,15 +67,37 @@ const chatsSlice = createSlice({
           state.errorMessage = 'Unexpected error. Try again!';
           break;
       }
-      if (state.status == ChatsStatus.LOADING) {
+      if (state.status === ChatsStatus.LOADING) {
         state.status = ChatsStatus.FAILED;
+      }
+    },
+    updateLastMessage: (
+      state,
+      action: PayloadAction<{
+        id: string;
+        lastMessage: string;
+        time: string;
+        sentByUser: boolean;
+      }>
+    ) => {
+      const foundIndex = state.chats?.findIndex(
+        (chat) => chat.id === action.payload.id
+      );
+      if (foundIndex !== undefined && foundIndex >= 0) {
+        const foundObj = state.chats![foundIndex];
+        foundObj.lastMessage = action.payload.lastMessage;
+        foundObj.time = action.payload.time;
+        foundObj.sentByUser = action.payload.sentByUser;
+        state.chats!.splice(foundIndex, 1);
+        state.chats!.unshift(foundObj);
       }
     },
   },
 });
 
 export default chatsSlice.reducer;
-export const { chatsRequest, chatsSuccess, chatsFailure } = chatsSlice.actions;
+export const { chatsRequest, chatsSuccess, chatsFailure, updateLastMessage } =
+  chatsSlice.actions;
 
 export const getChats =
   () =>
@@ -93,7 +116,28 @@ export const getChats =
         sentByUser: item.lastMessage ? item.lastMessage.sentByUser : null,
       }));
 
-      dispatch(chatsSuccess(chats));
+      dispatch(
+        chatsSuccess(
+          chats.sort((a, b) => {
+            if (!a.time) {
+              return -1;
+            } else if (!b.time) {
+              return 1;
+            }
+
+            const aDate = new Date(a.time);
+            const bDate = new Date(b.time);
+
+            if (aDate === bDate) {
+              return 0;
+            } else if (aDate > bDate) {
+              return -1;
+            } else {
+              return 1;
+            }
+          })
+        )
+      );
     } catch (error) {
       if (axios.isAxiosError(error)) {
         dispatch(

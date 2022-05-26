@@ -18,8 +18,8 @@ const messagesAPI = {
     }>('', {
       params: {
         chat: chatId,
-        page: -1,
-        size: -1,
+        page: 0,
+        size: 50,
       },
       headers: {
         Authorization: 'Bearer ' + token,

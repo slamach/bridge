@@ -1,10 +1,9 @@
 import { connect, ConnectedProps } from 'react-redux';
-import app from '../../state/modules/app';
 import {
   changeActiveChatId,
   clearActiveChatId,
   getMessages,
-  sendMessage,
+  initiateMessageSending,
 } from '../../state/modules/messages';
 import { RootState } from '../../state/store';
 import ChatScreen from './ChatScreen';
@@ -20,7 +19,7 @@ const mapDispatchToProps = {
   changeActiveChatId,
   clearActiveChatId,
   getMessages,
-  sendMessage,
+  initiateMessageSending,
 };
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
