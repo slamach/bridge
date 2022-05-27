@@ -3,11 +3,15 @@
 ![App Screenshot](doc/screenshot.png)
 
 ## About the Project
+
 React Native messenger created for learning purposes.
 
 Add chats, send messages and recieve them immediatly.
 
+[API GitHub Repository](https://github.com/sloning/messanger)
+
 ### Built With
+
 - Expo
 - React Native
 - Redux
@@ -17,6 +21,7 @@ Add chats, send messages and recieve them immediatly.
 - Prettier
 
 ## Installation and Usage
+
 ```
 npm install
 ```
@@ -30,6 +35,7 @@ npm start
 ```
 
 ## Contact
+
 Dmitry Sviridov  
 Telegram: [slamach](https://t.me/slamach)  
 Email: sviridov.dvv@gmail.com
