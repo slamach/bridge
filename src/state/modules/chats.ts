@@ -5,7 +5,6 @@ import {
   ThunkDispatch,
 } from '@reduxjs/toolkit';
 import axios from 'axios';
-import { string } from 'yup';
 import chatsAPI from '../../api/chatsAPI';
 import { RootState } from '../store';
 

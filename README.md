@@ -1,12 +1,18 @@
 # Bridge
 
+![App Screenshot](doc/screenshot.png)
+
 ## About the Project
 React Native messenger created for learning purposes.
+
+Add chats, send messages and recieve them immediatly.
 
 ### Built With
 - Expo
 - React Native
+- Redux
 - TypeScript
+- Stomp & WebSocket API
 - Husky
 - Prettier
 

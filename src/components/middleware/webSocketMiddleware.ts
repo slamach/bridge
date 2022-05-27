@@ -1,7 +1,6 @@
 import { Middleware } from 'redux';
 import { Client } from '@stomp/stompjs';
 import SockJS from 'sockjs-client';
-import { RootState } from '../../state/store';
 import {
   establishWebSocketConnection,
   initiateMessageRecieving,
