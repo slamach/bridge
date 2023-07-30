@@ -36,6 +36,6 @@ npm start
 
 ## Contact
 
-Dmitry Sviridov  
+Dmitrii Sviridov  
 Telegram: [slamach](https://t.me/slamach)  
 Email: sviridov.dvv@gmail.com
